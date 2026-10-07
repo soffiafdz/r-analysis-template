@@ -330,8 +330,15 @@ Generic base, identical across projects, then extended per project below a
   (`**bold**`, `<sup>`) in titles, axes and strips via ggtext.
 - `save_plot(plot, filename, width = 7, height = 7, dpi = 600)`; the
   extension sets the format.
-- `wrap_text()`, and `plot_comparison()` for estimates with CIs by group.
-- One `plot_<thing>()` per figure.
+- `wrap_text()` (returns `NULL` for `NULL`), and `plot_comparison()` for
+  estimates with CIs by group.
+- One `plot_<thing>()` per figure. Its `title`, `subtitle` and `caption`
+  arguments accept `NULL`, and it takes `base_size`, so the same function
+  draws the slide version: the script builds the plot a second time with
+  no title, subtitle or caption at `output.slide_base_size`, and saves it as
+  PNG at `output.slide_figure_size` to its own config path
+  (`<figure>_slide`). Direct labels that grow with the text may need extra
+  room on the axis for the slide version.
 
 **Domain modules:** one file per method or construct (e.g. a score
 recomputation, model helpers, a flow diagram).
@@ -504,7 +511,7 @@ to PowerPoint:
   a `.card.<group>` rule in `slides.scss` with its `manuscript_colors()`
   colour; `.neutral` is for cards without a group. A `::: {.note}` box
   holds a short explanation, and `fig-cap` gives one small grey line under a
-  figure. Figures use the slide variants (section 7) with
+  figure. Figures use their slide versions (section 5) with
   `#| fig-align: center`.
 - **`slides-pptx.qmd`, the editable copy** for colleagues to adapt: the same
   content with native tables in place of the cards, on the template

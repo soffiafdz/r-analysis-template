@@ -29,6 +29,10 @@ parameters: {}
 output:
   figure_format: [pdf, png]
   dpi: 600
+  # Slide versions of figures, PNG only: no title or caption (the slide
+  # heading carries them), 16:9 and larger text
+  slide_figure_size: [13.33, 7.5]
+  slide_base_size: 20
   table_formats: [html, tex]
 
 scripts:
