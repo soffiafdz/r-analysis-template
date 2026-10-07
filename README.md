@@ -25,7 +25,7 @@ on; the template is a starting point and a reference, not a dependency.
 | At the start | `.gitignore`, `.lintr`, `.here`, `.Rprofile`, `environment.yml`, `DESCRIPTION`, `README.project.md` (as `README.md`), `docs/CONVENTIONS.md` |
 | With the first script | `config/pipeline_config.yaml`; `R/utils/logging.R`, `config.R`, `data_io.R`, and `validation.R` once inputs are checked |
 | With the first table or figure | `R/utils/tables.R` (gt), `R/utils/plotting.R` (ggplot2) |
-| With the first report | `reports-src/_quarto.yml`, `.Rprofile`, `.gitignore`, `references.bib` |
+| With the first report | `reports-src/_quarto.yml`, `.Rprofile`, `.gitignore` |
 | With the first slides | `reports-src/slides.scss`; for a PowerPoint copy, `slides-reference.pptx` and `build_slides_reference.py` |
 | Once there is anything to look at | `docs/STYLE.md` |
 
