@@ -1,0 +1,40 @@
+# =============================================================================
+# Pipeline configuration: every path and analysis parameter lives here
+# =============================================================================
+
+general:
+  project_name: PROJECT_NAME
+  random_seed: 1618
+  log_level: INFO
+  n_cores: 4
+
+paths:
+  data: data
+  models: models
+  outputs: outputs
+  logs: logs
+
+# Every input and output file, relative to the project root.
+# Dated raw file names appear here and nowhere else.
+data:
+  raw: {}
+  external: {}
+  derivatives: {}
+  models: {}
+  outputs: {}
+
+# Analysis parameters and specification switches
+parameters: {}
+
+output:
+  figure_format: [pdf, png]
+  dpi: 600
+  table_formats: [html, tex]
+
+scripts:
+  # One flag per script with a cache check; set true to re-run, then back
+  force_regenerate: {}
+
+packages:
+  required: [data.table, here, yaml]
+  optional: []

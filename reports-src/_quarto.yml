@@ -1,0 +1,13 @@
+project:
+  output-dir: ../outputs/reports
+  execute-dir: project
+  render: []
+
+execute:
+  echo: false
+  warning: false
+  message: false
+
+format:
+  pdf:
+    pdf-engine: xelatex
