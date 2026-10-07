@@ -32,6 +32,13 @@ on; the template is a starting point and a reference, not a dependency.
 `README.project.md` is the outline of a project's README. To start a
 project, follow [`GUIDE.md`](GUIDE.md) section 13.
 
+## Example
+
+[`example/`](example/) is a small project started from these parts, on
+the public penguin data that ship with R: three scripts, a PDF report and
+two slide decks. The rendered documents are in
+[`example/outputs/reports/`](example/outputs/reports/).
+
 ## Requirements
 
 - micromamba, mamba or conda, to create the environment in
