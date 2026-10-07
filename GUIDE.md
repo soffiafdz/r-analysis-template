@@ -147,7 +147,8 @@ project/
 │   ├── scripts/              # NN_verb_object.R, run in numeric order
 │   └── utils/                # sourced helper modules (section 5)
 ├── reports-src/              # .qmd sources, _quarto.yml, references.bib, CSL;
-│                             # .Rprofile points Quarto's R at renv
+│                             # .Rprofile points Quarto's R at renv; slide
+│                             # theme and PowerPoint template (section 8)
 ├── docs/                     # this file, audits and their check scripts
 ├── data/                     # gitignored
 │   ├── archive/              # compressed copy of each original release
@@ -475,6 +476,64 @@ log_script_end("NN_verb_object.R", success = TRUE)
   and the journal's CSL file in `reports-src/`.
 - **Prose style:** no em-dashes (use a semicolon, a colon or a new sentence).
   Avoid stock openers such as "Of note" or "It is worth noting".
+
+### Slides
+
+Slides take their numbers from the same environment file as the report. They
+exist as two Quarto files, because the HTML cards do not survive conversion
+to PowerPoint:
+
+- **`slides.qmd`, the designed deck:** self-contained HTML (revealjs) with
+  the theme in `reports-src/slides.scss`.
+
+  ```yaml
+  format:
+    revealjs:
+      embed-resources: true
+      theme: [default, slides.scss]
+      slide-number: c/t
+      menu: false
+      width: 1600
+      height: 900
+      margin: 0.06
+  ```
+
+  Number cards are fenced divs: `::: {.cards}` holding one
+  `::: {.card .<group>}` per number, with a bold title as the first line
+  (shown in dark red), `[value]{.big}` and `[label]{.unit}`. Each group gets
+  a `.card.<group>` rule in `slides.scss` with its `manuscript_colors()`
+  colour; `.neutral` is for cards without a group. A `::: {.note}` box
+  holds a short explanation, and `fig-cap` gives one small grey line under a
+  figure. Figures use the slide variants (section 7) with
+  `#| fig-align: center`.
+- **`slides-pptx.qmd`, the editable copy** for colleagues to adapt: the same
+  content with native tables in place of the cards, on the template
+  `slides-reference.pptx`.
+
+  ```yaml
+  format:
+    pptx:
+      reference-doc: slides-reference.pptx
+      output-file: slides.pptx
+  ```
+
+  Pandoc picks a layout per slide from its content, which fixes how a slide
+  has to be written:
+  - A heading with a table, a list or a figure alone uses Title and Content.
+  - A short paragraph followed by one table or figure uses Content with
+    Caption: the template puts the paragraph under the table or figure in
+    small grey text. Notes and figure captions are written this way, before
+    the table or figure, not as `fig-cap` or a table caption.
+  - Text after a table or figure goes to a new slide.
+  - Column widths follow the dashes in a pipe table's separator line
+    (`|----|-----------|`) once a row is longer than 72 characters.
+
+A change to the slides' content is made in both files. Check the PowerPoint
+in PowerPoint itself; its layout cannot be judged from the file.
+
+The template is built by `reports-src/build_slides_reference.py` from
+pandoc's default (Python with python-pptx, outside renv). Re-run it from
+`reports-src/` only to change the template; the `.pptx` is committed.
 
 ---
 
