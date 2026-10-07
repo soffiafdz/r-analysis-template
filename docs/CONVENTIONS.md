@@ -129,7 +129,11 @@ upstream, that script is re-run before rendering. Documents render to PDF
 with xelatex.
 
 Captions start with a short bold title ending in a full stop, followed by
-the details.
+the details. Captions that contain numbers are built with
+`fig-cap: !expr` / `tbl-cap: !expr` from the same environment. A line of
+prose never starts with inline R that prints a number, which pandoc would
+read as a list item. Each document starts with
+`here::i_am("reports-src/<file>.qmd")`.
 
 ## Provenance
 

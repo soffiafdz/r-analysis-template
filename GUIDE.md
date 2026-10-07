@@ -312,6 +312,10 @@ Generic base, identical across projects, then extended per project below a
   source notes, symbols gt escapes) and `wrap_latex_table()` (a standalone
   `_standalone.tex` that compiles on its own for checking).
   `save_table_dual()` writes HTML and LaTeX to separate directories.
+- Documents and slides: `add_title.fn(gt_tbl, title)` (no header when
+  `title` is `NULL`, because the caption carries it),
+  `style_screen_table.fn()` (larger text for a browser or slides),
+  `style_pdf_table.fn(gt_tbl, size = 14)` (text that fits a PDF page).
 - One `create_<thing>_table()` per manuscript table.
 
 **`plotting.R`** (ggplot2)
@@ -435,11 +439,22 @@ log_script_end("NN_verb_object.R", success = TRUE)
 - **One environment script.** The last pipeline script loads every result
   file, computes every number the text uses and saves a single named list to
   `outputs/<document>_env.rds`. The document does no analysis of its own.
-- **Setup chunk.** It finds the project root (the `.here` file), sources the
-  utils, calls `load_config()`, then
-  `list2env(readRDS(here("outputs/<document>_env.rds")), environment())`.
+- **Setup chunk.** It starts with `here::i_am("reports-src/<file>.qmd")`:
+  run from `reports-src/`, `here()` otherwise stops at the Quarto project
+  there instead of the `.here` file. Then it sources the utils, calls
+  `load_config()`, and runs
+  `invisible(list2env(readRDS(get_data_path("outputs", "<document>_env")),
+  environment()))` (`invisible`, or the environment prints in the PDF).
+- **renv inside Quarto.** Quarto starts R in `reports-src/`, which has its
+  own `.Rprofile` pointing at the project's renv; without it knitr is not
+  found.
 - **Prose uses inline R only** (`` `r sprintf("%.1f", pct_female)` ``). A new
   number is added to the environment script, not computed in a chunk.
+- **Never start a line with inline R that prints a number.** After knitting,
+  a line beginning "16) lost" or "7362. Without" is a numbered list item to
+  pandoc, inside lists especially. Reflow so the number is mid-line.
+- **Captions with numbers** use `#| fig-cap: !expr sprintf(...)` (and
+  `tbl-cap`), so they come from the environment like the prose.
 - **After any upstream change,** re-run the environment script before
   rendering.
 - **`reports-src/_quarto.yml`:** `output-dir: ../outputs/reports`,
@@ -447,6 +462,11 @@ log_script_end("NN_verb_object.R", success = TRUE)
   explicit render list.
 - **Render to PDF:** `cd reports-src && quarto render <file>.qmd --to pdf`
   (xelatex). Word copies for journals are converted from the rendered output.
+  `_quarto.yml` sets the PDF defaults: Libertinus fonts (shipped with TeX
+  Live, with Greek letters), a table of contents and numbered sections.
+- **Tables in the PDF:** pass gt tables through `style_pdf_table.fn()`. If
+  one still overflows, shorten its row labels in the document (and say so in
+  the source note) rather than shrinking the text further.
 - **Captions:** every `tbl-cap` and `fig-cap` starts with a bold title of 3
   to 8 words ending in a full stop, then the details
   (`"**Short title.** Details..."`). The bold part becomes the short caption

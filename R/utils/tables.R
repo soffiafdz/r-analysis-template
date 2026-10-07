@@ -557,6 +557,53 @@ save_table_dual <- function(gt_table, filename, html_dir, tex_dir) {
   invisible(filename)
 }
 
+#' Add a markdown title unless it is NULL
+#'
+#' In Quarto documents the caption carries the title, so tables are built
+#' with title = NULL there; standalone HTML tables keep their own title.
+#'
+#' @param gt_tbl gt table
+#' @param title Title (may use markdown) or NULL
+#' @return gt table
+add_title.fn <- function(gt_tbl, title) {
+  if (is.null(title)) return(gt_tbl)
+  gt::tab_header(gt_tbl, title = gt::md(title))
+}
+
+#' Manuscript styling with text sized for a browser or slides
+#'
+#' @param gt_tbl gt table
+#' @return gt table
+style_screen_table.fn <- function(gt_tbl) {
+  gt_tbl |>
+    style_manuscript_table(table_type = "main") |>
+    gt::tab_options(
+      table.font.size = gt::px(16),
+      heading.title.font.size = gt::px(20),
+      column_labels.font.size = gt::px(16),
+      row_group.font.size = gt::px(16),
+      source_notes.font.size = gt::px(14)
+    )
+}
+
+#' Text size for a gt table in a Quarto PDF
+#'
+#' gt passes its px sizes to LaTeX, so screen-sized tables overflow the page.
+#' 14 px fits most tables; shorten long row labels before going smaller.
+#'
+#' @param gt_tbl gt table
+#' @param size Body text size in px
+#' @return gt table
+style_pdf_table.fn <- function(gt_tbl, size = 14) {
+  gt::tab_options(
+    gt_tbl,
+    table.font.size = gt::px(size),
+    column_labels.font.size = gt::px(size),
+    row_group.font.size = gt::px(size),
+    source_notes.font.size = gt::px(size - 1)
+  )
+}
+
 # =============================================================================
 # Project-specific tables: one create_<thing>_table() per manuscript table
 # =============================================================================
