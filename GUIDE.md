@@ -331,7 +331,8 @@ Generic base, identical across projects, then extended per project below a
   `theme_classic`; `use_markdown = TRUE` renders markdown and HTML
   (`**bold**`, `<sup>`) in titles, axes and strips via ggtext.
 - `save_plot(plot, filename, width = 7, height = 7, dpi = 600)`; the
-  extension sets the format.
+  extension sets the format. PDFs are written with `cairo_pdf`, which
+  embeds the fonts.
 - `wrap_text()` (returns `NULL` for `NULL`), and `plot_comparison()` for
   estimates with CIs by group.
 - One `plot_<thing>()` per figure. Its `title`, `subtitle` and `caption`

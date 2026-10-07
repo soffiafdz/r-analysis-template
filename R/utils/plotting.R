@@ -119,9 +119,16 @@ theme_publication <- function(base_size = 10, use_markdown = FALSE) {
 save_plot <- function(plot, filename, width = 7, height = 7, dpi = 600) {
   ensure_directory(dirname(filename))
 
+  # ggsave's default pdf device leaves fonts unembedded, which journals
+  # reject; cairo_pdf embeds them
+  device <- if (tolower(tools::file_ext(filename)) == "pdf") {
+    grDevices::cairo_pdf
+  }
+
   ggplot2::ggsave(
     filename = filename,
     plot = plot,
+    device = device,
     width = width,
     height = height,
     units = "in",
