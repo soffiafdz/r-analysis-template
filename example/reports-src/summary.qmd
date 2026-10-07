@@ -1,0 +1,107 @@
+---
+title: "Body mass of Palmer penguins by species and sex"
+subtitle: "A worked example of the R analysis project template"
+date: today
+bibliography: references.bib
+---
+
+```{r}
+#| label: setup
+suppressPackageStartupMessages({
+  library(here)
+  library(data.table)
+})
+here::i_am("reports-src/summary.qmd")
+source(here("R/utils/config.R"))
+source(here("R/utils/tables.R"))
+load_config()
+invisible(list2env(
+  readRDS(get_data_path("outputs", "summary_env")), environment()
+))
+
+# Formatting only: every number comes from summary_env.rds (03)
+# A true minus sign, and a no-break space so a number keeps its unit
+num.fn <- function(x) sub("^-", "\u2212", sprintf("%.0f", x))
+ci.fn <- function(x) {
+  sprintf("%s\u00a0g (%.0f%% CI %s to %s)", num.fn(x$estimate),
+          100 * ci_level, num.fn(x$lower), num.fn(x$upper))
+}
+dropped.v <- data$dropped_by_species[, sprintf("%d %s", N, species)]
+smallest.dt <- differences[which.min(estimate)]
+largest.dt <- differences[which.max(estimate)]
+r_squared_pct <- sprintf("%.0f%%", 100 * model$r_squared)
+
+# Claims the text makes, checked against the numbers
+stopifnot(
+  all(differences$lower > 0),
+  model$chinstrap$lower < 0, model$chinstrap$upper > 0,
+  model$gentoo$lower > 0
+)
+```
+
+# Purpose
+
+This report shows how the parts of the project template fit together on
+a small public dataset. Three scripts prepare the data, compare body mass
+between species and sexes, and gather every number this report and the
+slides use into one file. The report does no analysis of its own: every
+number below is read from that file.
+
+# Data
+
+The data are measurements of adult penguins of three species near Palmer
+Station, Antarctica, collected from `r data$years[1]` to `r data$years[2]`
+[@gorman2014] and distributed with R's datasets package
+[@horst2022; @kaye2025]. Of the `r data$penguins` penguins, a total
+of `r data$complete` had every measurement and a recorded sex. The
+other `r data$dropped` (`r paste(dropped.v, collapse = " and ")`) were
+left out.
+
+# Methods
+
+Mean body mass is given for each species and sex with a confidence
+interval of `r 100 * ci_level`% based on the t distribution. The
+difference between males and females within each species comes with a
+Welch interval. One linear model, body mass on species and sex, estimates
+the difference between the sexes adjusted for species. It assumes the same
+difference in every species; the within-species intervals show how far
+that holds.
+
+# Results
+
+Males were heavier than females in all three species (@fig-body-mass,
+@tbl-body-mass).
+The difference was smallest in `r smallest.dt$species` penguins,
+at `r ci.fn(smallest.dt)`, and largest in `r largest.dt$species`
+penguins, at `r ci.fn(largest.dt)`. Adjusted for species, males were
+heavier by `r ci.fn(model$male)`, and the
+model explained `r r_squared_pct` of the variance in body mass.
+Gentoo penguins were heavier than Adelie penguins of the same sex
+by `r ci.fn(model$gentoo)`; Chinstrap and Adelie penguins differed
+by `r ci.fn(model$chinstrap)`, an interval that includes zero.
+
+```{r}
+#| label: fig-body-mass
+#| out-width: "100%"
+#| fig-pos: H
+#| fig-cap: !expr sprintf("**Males are heavier in every species.** Body mass of each penguin, with the mean and %.0f%% confidence interval for each species and sex (%d penguins).", 100 * ci_level, data$complete)
+knitr::include_graphics(figure)
+```
+
+```{r}
+#| label: tbl-body-mass
+#| tbl-pos: H
+#| tbl-cap: "**Body mass by species and sex.** Penguins with every measurement and a recorded sex."
+create_body_mass_table.fn(
+  body_mass_table, sex_labels.v = get_parameter("sex_labels"),
+  ci_level = ci_level, title = NULL
+) |>
+  style_pdf_table.fn()
+```
+
+Because the within-species differences range
+from `r num.fn(smallest.dt$estimate)` to `r num.fn(largest.dt$estimate)` g,
+the adjusted difference is an average over species rather than a value
+that holds in each of them.
+
+# References {.unnumbered}

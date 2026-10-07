@@ -1,0 +1,88 @@
+---
+title: "Body mass of Palmer penguins by species and sex"
+subtitle: "A worked example of the R analysis project template"
+date: today
+date-format: long
+format:
+  # Editable copy of slides.qmd: the same content with tables in place of
+  # the cards, on the template slides-reference.pptx
+  pptx:
+    reference-doc: slides-reference.pptx
+    output-file: slides.pptx
+---
+
+```{r}
+#| label: setup
+suppressPackageStartupMessages({
+  library(here)
+  library(data.table)
+})
+here::i_am("reports-src/slides-pptx.qmd")
+source(here("R/utils/config.R"))
+load_config()
+invisible(list2env(
+  readRDS(get_data_path("outputs", "summary_env")), environment()
+))
+
+# Formatting only: every number comes from summary_env.rds (03)
+num.fn <- function(x) sub("^-", "\u2212", sprintf("%.0f", x))
+ci.fn <- function(x) {
+  sprintf("%s [%s, %s]", num.fn(x$estimate), num.fn(x$lower),
+          num.fn(x$upper))
+}
+difference.fn <- function(s) differences[species == s]
+n.fn <- function(s) means[species == s, sum(n)]
+spread <- paste(num.fn(min(differences$estimate)), "to",
+                num.fn(max(differences$estimate)), "g")
+dropped.v <- data$dropped_by_species[, sprintf("%d %s", N, species)]
+
+# Claims the slides make, checked against the numbers
+stopifnot(
+  all(differences$lower > 0),
+  model$chinstrap$lower < 0, model$chinstrap$upper > 0
+)
+```
+
+## Question and data
+
+| Question | How much heavier are male penguins than females, and does the difference depend on the species? |
+|-----|---------------|
+| **Penguins measured** | `r data$penguins` penguins of three species, Palmer Archipelago, Antarctica, `r data$years[1]` to `r data$years[2]` |
+| **Analysed** | `r data$complete` with every measurement and a recorded sex; left out: `r paste(dropped.v, collapse = " and ")` |
+| **Data** | `datasets::penguins`, shipped with R since 4.5; Gorman, Williams and Fraser (2014) |
+
+## Males are heavier in every species
+
+Points: individual penguins. Black: means with `r 100 * ci_level`%
+confidence intervals.
+
+```{r}
+knitr::include_graphics(slide_figure)
+```
+
+## Male minus female body mass
+
+Difference in means within each species, with its Welch confidence
+interval at `r 100 * ci_level`%.
+
+| | Adelie | Chinstrap | Gentoo |
+|---|---|---|---|
+| **Difference (g)** | `r ci.fn(difference.fn("Adelie"))` | `r ci.fn(difference.fn("Chinstrap"))` | `r ci.fn(difference.fn("Gentoo"))` |
+| **Penguins** | `r n.fn("Adelie")` | `r n.fn("Chinstrap")` | `r n.fn("Gentoo")` |
+
+## Adjusted for species
+
+- **Males** heavier by `r ci.fn(model$male)` g
+- **Gentoo** heavier than Adelie of the same sex,
+  by `r ci.fn(model$gentoo)` g
+- **Chinstrap** and Adelie: `r ci.fn(model$chinstrap)` g, no clear
+  difference
+- **Model:** body mass on species and sex, `r model$n` penguins,
+  R² `r sprintf("%.2f", model$r_squared)`
+
+## Caveats
+
+- **One difference for all species:** the model assumes it; the
+  within-species differences range from `r spread`
+- **Complete records only:** `r data$dropped` penguins without a recorded
+  sex are left out
