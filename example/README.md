@@ -5,7 +5,8 @@ much heavier male penguins are than females in three species, using the
 public Palmer penguins data: means with confidence intervals by species
 and sex, differences within each species, and one linear model. The
 rendered report and both slide decks are in
-[`outputs/reports/`](outputs/reports/).
+[`outputs/reports/`](outputs/reports/); GitHub shows the HTML slides as
+source, so download `slides.html` to view them.
 
 ## Data access
 

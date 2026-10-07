@@ -37,7 +37,8 @@ project, follow [`GUIDE.md`](GUIDE.md) section 13.
 [`example/`](example/) is a small project started from these parts, on
 the public penguin data that ship with R: three scripts, a PDF report and
 two slide decks. The rendered documents are in
-[`example/outputs/reports/`](example/outputs/reports/).
+[`example/outputs/reports/`](example/outputs/reports/); GitHub shows the
+HTML slides as source, so download `slides.html` to view them.
 
 ## Requirements
 
