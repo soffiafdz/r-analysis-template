@@ -2,8 +2,6 @@
 # Logging Utilities
 # =============================================================================
 # Functions for consistent logging throughout the pipeline
-# Author: Pipeline Refactoring
-# Date: 2024
 # =============================================================================
 
 library(here)
