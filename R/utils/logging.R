@@ -18,8 +18,8 @@ library(here)
 #' @param log_level Minimum level to log (DEBUG, INFO, WARN, ERROR)
 #' @param append Append to existing log file
 init_logger <- function(log_dir = here("logs"),
-                       log_level = "INFO",
-                       append = FALSE) {
+                        log_level = "INFO",
+                        append = FALSE) {
   # Create log directory with error handling
   if (!dir.exists(log_dir)) {
     if (!dir.create(log_dir, recursive = TRUE, showWarnings = FALSE)) {
@@ -29,8 +29,10 @@ init_logger <- function(log_dir = here("logs"),
 
   # Set log file with timestamp
   timestamp <- format(Sys.time(), "%Y%m%d_%H%M%S")
-  .log_file <<- here(log_dir, paste0("pipeline_", timestamp, ".log"))
-  .log_level <<- log_level
+  log.path <- here(log_dir, paste0("pipeline_", timestamp, ".log"))
+  # Module state read by every log_*() call
+  .log_file <<- log.path # nolint: assignment_linter.
+  .log_level <<- log_level # nolint: assignment_linter.
 
   # Write header
   if (!append) {

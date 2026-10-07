@@ -18,7 +18,8 @@ load_config <- function(config_file = here("config/pipeline_config.yaml")) {
     stop("Configuration file not found: ", config_file, call. = FALSE)
   }
 
-  .config <<- read_yaml(config_file)
+  # All helpers read the one configuration held at the top level
+  .config <<- read_yaml(config_file) # nolint: assignment_linter.
   invisible(.config)
 }
 
@@ -46,7 +47,7 @@ get_config <- function(..., default = NULL) {
     value <- value[[key]]
   }
 
-  return(value)
+  value
 }
 
 #' Get data path from configuration
@@ -60,12 +61,10 @@ get_data_path <- function(...) {
 
 #' Get script setting
 #'
-#' @param script_name Name of script (e.g., "gamlss")
-#' @param setting Setting name (e.g., "redo_plots")
+#' @param ... Path under `scripts`, at any depth
+#'   (e.g., "force_regenerate", "nn_key")
 #' @param default Default value
 get_script_setting <- function(..., default = NULL) {
-  # Supports nested paths
-  # e.g.: get_script_setting("lgcm", "bootstrap", "enabled")
   path_elements.lst <- list(...)
   do.call(get_config, c(list("scripts"), path_elements.lst,
                         list(default = default)))

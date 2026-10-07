@@ -66,8 +66,8 @@ validate_not_empty <- function(x, data_name = "data") {
 #' @param min_val Minimum expected value
 #' @param max_val Maximum expected value
 #' @param na_allowed Are NAs allowed
-validate_num_range <- function(
-    data.dt, col_name, min_val = -Inf, max_val = Inf, na_allowed = TRUE) {
+validate_num_range <- function(data.dt, col_name, min_val = -Inf,
+                               max_val = Inf, na_allowed = TRUE) {
   if (!col_name %in% names(data.dt)) {
     msg <- sprintf("Column %s not found", col_name)
     log_error(msg)
@@ -111,8 +111,8 @@ validate_num_range <- function(
 #' @param col_name Column name
 #' @param expected_levels.v Expected factor levels or unique values
 #' @param allow_extra Allow extra levels not in expected
-validate_categorical <- function(
-    data.dt, col_name, expected_levels.v, allow_extra = FALSE) {
+validate_categorical <- function(data.dt, col_name, expected_levels.v,
+                                 allow_extra = FALSE) {
   if (!col_name %in% names(data.dt)) {
     msg <- sprintf("Column %s not found", col_name)
     log_error(msg)
@@ -152,8 +152,8 @@ validate_categorical <- function(
 #' @param age_col Name of age column
 #' @param min_age Minimum reasonable age
 #' @param max_age Maximum reasonable age
-validate_age <- function(
-    data.dt, age_col = "AGE", min_age = 18, max_age = 120, ...) {
+validate_age <- function(data.dt, age_col = "AGE", min_age = 18,
+                         max_age = 120, ...) {
   validate_num_range(
     data.dt, age_col,
     min_val = min_age, max_val = max_age, ...

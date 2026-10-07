@@ -33,7 +33,7 @@ check_files_exist <- function(files.v, stop_on_missing = TRUE) {
   }
 
   log_debug("All required files exist (%d files)", length(files.v))
-  return(TRUE)
+  TRUE
 }
 
 #' Read RDS file with error handling
@@ -145,7 +145,7 @@ needs_regeneration <- function(output_path,
   }
 
   log_debug("Output up-to-date: %s", basename(output_path))
-  return(FALSE)
+  FALSE
 }
 
 #' Create directory if it doesn't exist
