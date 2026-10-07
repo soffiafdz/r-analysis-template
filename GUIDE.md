@@ -98,6 +98,8 @@ micromamba activate <env-name>     # or let direnv do it (2.4)
 Rscript -e 'renv::restore()'
 ```
 
+`mamba` and `conda` take the same commands.
+
 ### 2.4 Automatic activation (optional)
 
 With [direnv](https://direnv.net), an `.envrc` at the project root activates
@@ -471,7 +473,9 @@ log_script_end("NN_verb_object.R", success = TRUE)
 - **Render to PDF:** `cd reports-src && quarto render <file>.qmd --to pdf`
   (xelatex). Word copies for journals are converted from the rendered output.
   `_quarto.yml` sets the PDF defaults: Libertinus fonts (shipped with TeX
-  Live, with Greek letters), a table of contents and numbered sections.
+  Live, with Greek letters), a table of contents and numbered sections. A
+  minimal TeX install such as TinyTeX needs
+  `tlmgr install libertinus-fonts`.
 - **Tables in the PDF:** pass gt tables through `style_pdf_table.fn()`. If
   one still overflows, shorten its row labels in the document (and say so in
   the source note) rather than shrinking the text further.
@@ -537,7 +541,8 @@ to PowerPoint:
     (`|----|-----------|`) once a row is longer than 72 characters.
 
 A change to the slides' content is made in both files. Check the PowerPoint
-in PowerPoint itself; its layout cannot be judged from the file.
+in PowerPoint itself; its layout cannot be judged from the file, and
+LibreOffice may lay it out differently.
 
 The template is built by `reports-src/build_slides_reference.py` from
 pandoc's default (Python with python-pptx, outside renv). Re-run it from

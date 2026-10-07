@@ -38,8 +38,10 @@ project, follow [`GUIDE.md`](GUIDE.md) section 13.
   `environment.yml` (R 4.6, Quarto 1.9, compilers and system libraries).
   R packages are installed with renv.
 - TeX Live with xelatex for PDF reports; the Libertinus fonts ship with it.
+  A minimal install such as TinyTeX needs `tlmgr install libertinus-fonts`.
 - Python with python-pptx, only to rebuild the PowerPoint template.
-- PowerPoint, to check the PowerPoint slides.
+- PowerPoint, to check the PowerPoint slides; LibreOffice may lay them out
+  differently.
 
 The commands in the guide were written on macOS; `sed -i ''` is BSD sed,
 and GNU sed takes `-i` alone.
