@@ -9,8 +9,8 @@ says how to build them; this page says what they look like.
 |---|---|---|
 | Ink | `#111111` | text, headings, bold text, numbers |
 | Muted | `#5C5C5C` | secondary text: units, captions, notes, dates |
-| Dark red | `#8B0000` | accents only: rules under headings and titles, card titles, the title slide's subtitle |
-| Midnight blue | `#191970` | second accent: neutral cards, the bar of note boxes |
+| Dark red | `#8B0000` | main accent: rules under headings and titles, card titles, the title slide's subtitle, `.red` cards |
+| Midnight blue | `#191970` | second accent: the bar of note boxes, `.blue` cards |
 | Rule | `#DDDDDD` | light dividers |
 | Panel | `#F5F5F5` | card and note backgrounds |
 
@@ -70,6 +70,12 @@ never coloured for emphasis: bold text stays in ink.
   number cards (grey panel, coloured top bar, dark red title, large ink
   number, muted unit); note boxes with a midnight blue bar; one small muted
   caption line under a figure; dark red progress bar.
+- **Card colours:** dark red is the main accent. A card whose colour stands
+  for a group in the figures keeps that group's colour from
+  `manuscript_colors()`; that is the only reason cards in a row may differ
+  by meaning. Any other row of cards is all `.red`, or all different colours
+  starting with `.red` (`.red`, `.blue`, `.green` `#228833`, `.teal`
+  `#44AA99`); never a partial mix.
 - **PowerPoint** (`reports-src/slides-reference.pptx`): the same palette and
   rules on Arial, tables in place of cards, notes in small grey text under
   the table or figure.

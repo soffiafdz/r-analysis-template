@@ -509,7 +509,8 @@ to PowerPoint:
   `::: {.card .<group>}` per number, with a bold title as the first line
   (shown in dark red), `[value]{.big}` and `[label]{.unit}`. Each group gets
   a `.card.<group>` rule in `slides.scss` with its `manuscript_colors()`
-  colour; `.neutral` is for cards without a group. A `::: {.note}` box
+  colour; cards without a group use `.red`, `.blue`, `.green` or `.teal`,
+  following the card colour rule in `docs/STYLE.md`. A `::: {.note}` box
   holds a short explanation, and `fig-cap` gives one small grey line under a
   figure. Figures use their slide versions (section 5) with
   `#| fig-align: center`.

@@ -8,6 +8,10 @@ $dark-red: #8B0000;
 $midnight: #191970;
 $rule: #dddddd;
 $panel: #f5f5f5;
+// General-purpose card colours from Tol's palettes; a project whose figures
+// use one of them for a group replaces it here
+$green: #228833;
+$teal: #44AA99;
 
 $body-bg: #ffffff;
 $body-color: $ink;
@@ -74,9 +78,14 @@ $presentation-h2-font-size: 1.55em;
   margin-top: 2em;
 }
 
-// Number cards: the top bar matches the group's colour in the figures;
-// text stays in ink. A project adds one class per group, with the colour
-// from manuscript_colors(), e.g. .card.treated { border-top-color: #4477AA; }
+// Number cards: the top bar carries the colour; text stays in ink.
+// Colour rule (docs/STYLE.md): dark red is the main accent. A card whose
+// colour stands for a group in the figures keeps that colour, the only
+// reason cards in a row may differ by meaning; a project adds one class per
+// group from manuscript_colors(), e.g.
+// .card.treated { border-top-color: #4477AA; }. Any other row of cards is
+// all .red, or all different colours starting with .red (.red, .blue,
+// .green, .teal); never a partial mix.
 .cards {
   display: flex;
   gap: 1.2em;
@@ -104,7 +113,10 @@ $presentation-h2-font-size: 1.55em;
 .card .unit {
   color: $ink-muted;
 }
-.card.neutral { border-top-color: $midnight; }
+.card.red { border-top-color: $dark-red; }
+.card.blue { border-top-color: $midnight; }
+.card.green { border-top-color: $green; }
+.card.teal { border-top-color: $teal; }
 
 .note {
   background: $panel;
