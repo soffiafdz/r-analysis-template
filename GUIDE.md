@@ -1,8 +1,8 @@
 # R analysis conventions: full guide
 
-Private reference for setting up and running R analysis projects, with the
-reasoning behind each choice. Repositories carry the short public version,
-`docs/CONVENTIONS.md`; this file stays in the template.
+Reference for setting up and running R analysis projects, with the reasoning
+behind each choice. Projects carry the short version, `docs/CONVENTIONS.md`;
+this file stays in the template.
 
 The goal is that anyone who clones a repository can rebuild the exact software
 environment, run the pipeline from raw data to manuscript, and trace every
@@ -639,13 +639,18 @@ to copy whole: a file or folder enters a repository the first time code needs
 it. A first commit with empty folders, unused helpers and placeholder text
 looks generated, and is harder to review.
 
+Copied files belong to the project and may diverge from the template. To
+take up a later change to the template, compare the two copies
+(`diff -u <template_dir>/<file> <file>`) and apply what fits the project.
+
 1. Create the project with the core files only:
 
    ```sh
    T=<template_dir>; P=<project_dir>
    mkdir -p $P/docs && cd $P
    cp $T/.gitignore $T/.lintr $T/.here $T/.Rprofile $T/environment.yml \
-      $T/DESCRIPTION $T/README.md .
+      $T/DESCRIPTION .
+   cp $T/README.project.md README.md
    cp $T/docs/CONVENTIONS.md docs/
    sed -i '' -e 's/ENV_NAME/<env-name>/' environment.yml   # GNU sed: -i
    sed -i '' -e 's/PROJECT_NAME/<name>/' DESCRIPTION          # letters, digits, dots
