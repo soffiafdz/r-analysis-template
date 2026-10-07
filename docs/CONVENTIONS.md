@@ -135,6 +135,9 @@ prose never starts with inline R that prints a number, which pandoc would
 read as a list item. Each document starts with
 `here::i_am("reports-src/<file>.qmd")`.
 
+Colours, type, figures, tables and slides follow `docs/STYLE.md`: black and
+white with dark red accents, and colourblind-safe colours for data.
+
 ## Provenance
 
 The random seed is set from the config at the top of every script, and every

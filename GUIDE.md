@@ -576,7 +576,15 @@ pandoc's default (Python with python-pptx, outside renv). Re-run it from
 - **Multiple starts.** Optimizers that stop at the first acceptable solution
   can land on a local optimum. Fit from several starting values and keep the
   best log-likelihood. This applies to latent growth, mixture and
-  group-based trajectory models alike.
+  group-based trajectory models alike. A grid search that keeps the best of
+  many short runs can still miss, and more starts can even give a worse fit
+  for some models. Signs of a missed optimum: a model with a lower
+  likelihood than a simpler model nested in it. Before reporting, re-fit
+  with more starts and keep only a selected solution that both searches
+  reach.
+- **Do not edit a script while `Rscript` runs it.** R reads the file as it
+  goes, so a long run can pick up half-edited code. Edit a copy and swap it
+  in after the run.
 - **Check every fit:** convergence status, missing standard errors, and
   whether nested models fitted successfully.
 - **Exogenous predictors in SEM** (e.g. OpenMx): never fix their means to 0
@@ -615,6 +623,12 @@ pandoc's default (Python with python-pptx, outside renv). Re-run it from
 | Config, code and paper each stated a different value for the same threshold | One source of truth: the config (4) |
 | A proportion threshold was checked against a percentage | `validate_num_range()` on inputs (5) |
 | Script headers kept old numbers after renumbering | Update headers when renaming (7) |
+| A mixture-model grid fitted with 100 starts missed better solutions for some models | Re-fit with more starts; keep a solution both searches reach (10) |
+| `quarto render` could not find knitr, then `here()` pointed at `reports-src/` | `reports-src/.Rprofile` for renv; `here::i_am()` in each document (8) |
+| A sentence starting with an inline number turned into a numbered list item | Never start a line with inline R that prints a number (8) |
+| "APOE ε4" printed with a blank for ε in the PDF | Libertinus fonts in `_quarto.yml` (8) |
+| Slides converted to PowerPoint lost their layout | A separate PowerPoint deck on its own template (8) |
+| A yellow line label was unreadable on white | 3:1 contrast for coloured text (docs/STYLE.md) |
 
 ---
 
