@@ -676,8 +676,12 @@ looks generated, and is harder to review.
      inputs are checked). Copy `config/pipeline_config.yaml` and fill only
      the sections in use.
    - First table or figure: `R/utils/tables.R` or `plotting.R`.
-   - First report: `reports-src/_quarto.yml`, the journal's CSL file and
-     `references.bib`.
+   - First report: `reports-src/_quarto.yml`, `reports-src/.Rprofile`,
+     `reports-src/.gitignore`, the journal's CSL file and `references.bib`.
+   - First slides: `reports-src/slides.scss`; for a PowerPoint copy also
+     `slides-reference.pptx` and `build_slides_reference.py` (section 8).
+   - `docs/STYLE.md` with `CONVENTIONS.md` once there is anything to look
+     at.
    - Folders under `data/`, `models/`, `outputs/` and `logs/` are created by
      the helpers on first write; they need no `.gitkeep`.
    - Packages arrive with the code that calls them (implicit snapshot).
