@@ -132,11 +132,14 @@ save_plot <- function(plot, filename, width = 7, height = 7, dpi = 600) {
 }
 
 #' Wrap long text (titles, captions)
-#' @param text Text to wrap
+#' @param text Text to wrap, or NULL
 #' @param width Maximum line width
 #' @param indent Indentation for wrapped lines
-#' @return Wrapped text
+#' @return Wrapped text, or NULL for NULL
 wrap_text <- function(text, width = 100, indent = 0) {
+  # str_wrap(NULL) gives character(0), for which ggplot2 still lays out a
+  # label; NULL leaves it out
+  if (is.null(text)) return(NULL)
   stringr::str_wrap(text, width = width, exdent = indent)
 }
 

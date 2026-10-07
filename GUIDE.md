@@ -146,7 +146,8 @@ project/
 ├── R/
 │   ├── scripts/              # NN_verb_object.R, run in numeric order
 │   └── utils/                # sourced helper modules (section 5)
-├── reports-src/              # .qmd sources, _quarto.yml, references.bib, CSL
+├── reports-src/              # .qmd sources, _quarto.yml, references.bib, CSL;
+│                             # .Rprofile points Quarto's R at renv
 ├── docs/                     # this file, audits and their check scripts
 ├── data/                     # gitignored
 │   ├── archive/              # compressed copy of each original release
