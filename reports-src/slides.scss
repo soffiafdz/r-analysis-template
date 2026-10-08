@@ -4,6 +4,13 @@
 // are for figures and for cards that stand for a group. Neither is used for
 // the other.
 
+// Neutrals
+$ink: #1A1A1A;
+$ink-soft: #4A4A4A;
+$ink-muted: #5C5C5C;
+$rule: #D9D9D9;
+$panel: #F5F5F5;
+
 // Brand: McGill red leads; the Douglas Research Centre and the StoP-AD
 // Centre supply the secondary colours (from douglas.research.mcgill.ca and
 // centre-stopad.com, October 2026). Another affiliation changes these
@@ -11,19 +18,13 @@
 $mcgill-red: #ED1B2F;
 $douglas-blue: #177DB3;   // site, --douglas-secondary
 $stopad-teal: #1A6C7A;    // site theme colour
-// Within 15 Delta E of the male colour of manuscript_colors() (#191970), so
-// kept out of the slides; listed for figures that need a brand navy
+// 4.9 from the male colour of manuscript_colors() (#191970; OKLab x 100),
+// so kept out of the slides; listed for figures that need a brand navy
 $douglas-navy: #102E71;   // logo
 $douglas-deep: #003E62;   // site, --douglas-secondary2
 
 $accent: $mcgill-red;
 $secondary: $stopad-teal;
-
-$ink: #1A1A1A;
-$ink-soft: #4A4A4A;
-$ink-muted: #5C5C5C;
-$rule: #D9D9D9;
-$panel: #F5F5F5;
 
 $body-bg: #ffffff;
 $body-color: $ink;
