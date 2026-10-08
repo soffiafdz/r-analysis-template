@@ -22,10 +22,10 @@ manuscript_colors <- function() {
     male = "#191970",          # Midnight blue
     combined = "gray40",
     reference_line = "gray50",
-    # Species, from tol_bright; green is left out because the slide theme's
-    # general .green cards use it
+    # Species, from tol_bright; red is left out because it is too close to
+    # the McGill red of the slides (docs/STYLE.md)
     adelie = "#4477AA",               # tol_bright blue
-    chinstrap = "#EE6677",            # tol_bright red
+    chinstrap = "#228833",            # tol_bright green
     gentoo = "#AA3377"                # tol_bright purple
   )
 }
