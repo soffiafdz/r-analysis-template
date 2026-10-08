@@ -26,7 +26,7 @@ on; the template is a starting point and a reference, not a dependency.
 | With the first script | `config/pipeline_config.yaml`; `R/utils/logging.R`, `config.R`, `data_io.R`, and `validation.R` once inputs are checked |
 | With the first table or figure | `R/utils/tables.R` (gt), `R/utils/plotting.R` (ggplot2) |
 | With the first report | `reports-src/_quarto.yml`, `.Rprofile`, `.gitignore` |
-| With the first slides | `reports-src/slides.scss`; for a PowerPoint copy, `slides-reference.pptx` and `build_slides_reference.py` |
+| With the first slides | `reports-src/slides.scss`, `logos/` and `screenshot_slides.sh`; for a PowerPoint copy, `slides-reference.pptx` and `build_slides_reference.py` |
 | Once there is anything to look at | `docs/STYLE.md` |
 
 `README.project.md` is the outline of a project's README. To start a
@@ -47,6 +47,7 @@ HTML slides as source, so download `slides.html` to view them.
   R packages are installed with renv.
 - TeX Live with xelatex for PDF reports; the Libertinus fonts ship with it.
   A minimal install such as TinyTeX needs `tlmgr install libertinus-fonts`.
+- Firefox, to screenshot slides for checking.
 - Python with python-pptx, only to rebuild the PowerPoint template.
 - PowerPoint, to check the PowerPoint slides; LibreOffice may lay them out
   differently.
@@ -58,4 +59,6 @@ and GNU sed takes `-i` alone.
 
 `GUIDE.md` and this README are licensed under
 [CC BY 4.0](LICENSE-docs). Everything else, including the files copied into
-projects, is under the [MIT licence](LICENSE).
+projects, is under the [MIT licence](LICENSE), except the logos in
+`reports-src/logos/`, which are trademarks of their institutions
+(`reports-src/logos/SOURCES.md`).

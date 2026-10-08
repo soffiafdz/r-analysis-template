@@ -136,8 +136,10 @@ prose never starts with inline R that prints a number, which pandoc would
 read as a list item. Each document starts with
 `here::i_am("reports-src/<file>.qmd")`.
 
-Colours, type, figures, tables and slides follow `docs/STYLE.md`: black and
-white with dark red accents, and colourblind-safe colours for data.
+Colours, type, figures, tables and slides follow `docs/STYLE.md`: McGill
+red with Douglas and StoP-AD colours for the frame of the slides, and
+colourblind-safe colours for data, never mixed. Every slide is checked from
+a screenshot before a deck is shared.
 
 ## Provenance
 

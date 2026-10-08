@@ -496,9 +496,12 @@ exist as two Quarto files, because the HTML cards do not survive conversion
 to PowerPoint:
 
 - **`slides.qmd`, the designed deck:** self-contained HTML (revealjs) with
-  the theme in `reports-src/slides.scss`.
+  the theme in `reports-src/slides.scss` and the logos in
+  `reports-src/logos/`. The title page is written by hand, so the YAML
+  gives `pagetitle` (the browser tab) and no `title`.
 
   ```yaml
+  pagetitle: "Short title"
   format:
     revealjs:
       embed-resources: true
@@ -510,15 +513,48 @@ to PowerPoint:
       margin: 0.06
   ```
 
+  The title page (and a closing slide, if any):
+
+  ```markdown
+  ## {.title-page}
+
+  ::: {.title-block}
+  [Lab meeting · October 2026]{.eyebrow}
+
+  [The title]{.title}
+
+  [The subtitle]{.subtitle}
+
+  [Author · Lab, institution]{.byline}
+  :::
+
+  ::: {.logos}
+  ![](logos/mcgill.svg){.mcgill fig-alt="McGill University"}
+  ![](logos/douglas.png){fig-alt="Douglas Research Centre"}
+  ![](logos/stopad.png){fig-alt="StoP-AD Centre"}
+  :::
+  ```
+
+  Every other slide states its message in the heading and names its part
+  of the talk in an eyebrow:
+  `## Males are heavier in every species {data-eyebrow="Results"}`.
+  A divider between parts is `## Title {.divider data-eyebrow="Part 2"}`
+  followed by one line.
+
   Number cards are fenced divs: `::: {.cards}` holding one
-  `::: {.card .<group>}` per number, with a bold title as the first line
-  (shown in dark red), `[value]{.big}` and `[label]{.unit}`. Each group gets
-  a `.card.<group>` rule in `slides.scss` with its `manuscript_colors()`
-  colour; cards without a group use `.red`, `.blue`, `.green` or `.teal`,
-  following the card colour rule in `docs/STYLE.md`. A `::: {.note}` box
-  holds a short explanation, and `fig-cap` gives one small grey line under a
-  figure. Figures use their slide versions (section 5) with
-  `#| fig-align: center`.
+  `::: {.card .<group>}` per number, each with up to four paragraphs: a
+  bold title, `[value]{.big} [unit]{.unit}`, and a line of detail. Each
+  group gets a `.card.<group>` rule in the project's `slides.scss` with its
+  `manuscript_colors()` colour; other cards are `.red` (or `.teal` for the
+  second of two kinds), following the card rules in `docs/STYLE.md`. A
+  `::: {.note}` box holds a short explanation; `[...]{.lead}` sets the
+  slide's question under the title; `[...]{.small}` and `fig-cap` give one
+  small grey line under a table or figure. Figures use their slide
+  versions (section 5) with `#| fig-align: center`.
+
+  A deck is not finished until every slide has been looked at. Screenshot
+  them all with `reports-src/screenshot_slides.sh` (Firefox), and go
+  through the faults table in `docs/STYLE.md`.
 - **`slides-pptx.qmd`, the editable copy** for colleagues to adapt: the same
   content with native tables in place of the cards, on the template
   `slides-reference.pptx`.
@@ -636,6 +672,10 @@ pandoc's default (Python with python-pptx, outside renv). Re-run it from
 | "APOE ε4" printed with a blank for ε in the PDF | Libertinus fonts in `_quarto.yml` (8) |
 | Slides converted to PowerPoint lost their layout | A separate PowerPoint deck on its own template (8) |
 | A yellow line label was unreadable on white | 3:1 contrast for coloured text (docs/STYLE.md) |
+| A deck had values broken over two lines, "1,204 of 1,204", small left-aligned tables and a list of scripts | Card text budgets, the faults table and a screenshot of every slide (docs/STYLE.md, 8) |
+| Cards in a row did not line up, and one in one group's colour held another group's numbers | Cards on a shared grid; group colours only for that group's numbers (docs/STYLE.md) |
+| A brand navy was nearly the colour for men | Brand and data colours at least 15 apart in OKLab (docs/STYLE.md) |
+| Topic titles ("Results") left the message to the speaker | Message titles, with the part of the talk in an eyebrow (8) |
 
 ---
 
@@ -690,7 +730,8 @@ take up a later change to the template, compare the two copies
    - First table or figure: `R/utils/tables.R` or `plotting.R`.
    - First report: `reports-src/_quarto.yml`, `reports-src/.Rprofile`,
      `reports-src/.gitignore`, the journal's CSL file and `references.bib`.
-   - First slides: `reports-src/slides.scss`; for a PowerPoint copy also
+   - First slides: `reports-src/slides.scss`, `reports-src/logos/` and
+     `screenshot_slides.sh`; for a PowerPoint copy also
      `slides-reference.pptx` and `build_slides_reference.py` (section 8).
    - `docs/STYLE.md` with `CONVENTIONS.md` once there is anything to look
      at.
