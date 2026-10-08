@@ -55,8 +55,10 @@ may be set in red with `.accent`.
   ```
 
   When a project's data palette is fixed by a paper and fails against a
-  brand colour, that colour stays off every slide that shows the group,
-  and the README says so under "Project notes".
+  brand colour, the project's `slides.scss` sets that secondary colour to
+  ink. McGill red keeps the frame (eyebrows, bars, header rules), but
+  slides that show the clashing group use no `.red` cards and no
+  `.accent`. A comment in `slides.scss` gives the pair and the distance.
 - A colour used for text, such as a direct label on a line, needs at least
   3:1 contrast on white. Tol's bright yellow `#CCBB44` (1.9:1) is replaced
   by his dark yellow `#997700` when it labels anything.
