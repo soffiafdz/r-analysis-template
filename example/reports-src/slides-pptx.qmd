@@ -1,0 +1,87 @@
+---
+title: "Body mass of Palmer penguins by species and sex"
+subtitle: "A worked example of the R analysis project template"
+date: today
+date-format: long
+format:
+  # Editable copy of slides.qmd: the same content with tables in place of
+  # the cards, on the template slides-reference.pptx
+  pptx:
+    reference-doc: slides-reference.pptx
+    output-file: slides.pptx
+---
+
+```{r}
+#| label: setup
+suppressPackageStartupMessages({
+  library(here)
+  library(data.table)
+})
+here::i_am("reports-src/slides-pptx.qmd")
+source(here("R/utils/config.R"))
+load_config()
+invisible(list2env(
+  readRDS(get_data_path("outputs", "summary_env")), environment()
+))
+
+# Formatting only: every number comes from summary_env.rds (03)
+num.fn <- function(x) sub("^-", "\u2212", sprintf("%.0f", x))
+range.fn <- function(x) {
+  paste(num.fn(x$lower), "to", num.fn(x$upper))
+}
+difference.fn <- function(s) differences[species == s]
+n.fn <- function(s) means[species == s, sum(n)]
+largest <- differences[which.max(estimate), species]
+spread <- paste(num.fn(min(differences$estimate)), "to",
+                num.fn(max(differences$estimate)), "g")
+dropped.v <- data$dropped_by_species[, sprintf("%d %s", N, species)]
+ci_pct <- 100 * ci_level
+
+# Claims the slides make, checked against the numbers
+stopifnot(
+  all(differences$lower > 0),
+  model$male$lower > 0,
+  model$chinstrap$lower < 0, model$chinstrap$upper > 0
+)
+```
+
+## How much heavier are males, and does it depend on the species?
+
+| | |
+|-----|---------------|
+| **Penguins measured** | `r data$penguins` penguins of three species, Palmer Archipelago, Antarctica, `r data$years[1]` to `r data$years[2]` |
+| **Analysed** | `r data$complete` with every measurement and a recorded sex; left out: `r paste(dropped.v, collapse = " and ")` |
+| **Data** | `datasets::penguins`, shipped with R since 4.5; Gorman, Williams and Fraser (2014) |
+
+## Males are heavier in every species
+
+`r data$complete` penguins. Points: individual penguins. Black: means with
+`r ci_pct`% confidence intervals.
+
+```{r}
+knitr::include_graphics(slide_figure)
+```
+
+## The difference is largest in `r largest` penguins
+
+Male minus female mean body mass within each species, with a Welch
+confidence interval (CI).
+
+| | Adelie | Chinstrap | Gentoo |
+|---|---|---|---|
+| **Difference (g)** | `r num.fn(difference.fn("Adelie")$estimate)` | `r num.fn(difference.fn("Chinstrap")$estimate)` | `r num.fn(difference.fn("Gentoo")$estimate)` |
+| **`r ci_pct`% CI (g)** | `r range.fn(difference.fn("Adelie"))` | `r range.fn(difference.fn("Chinstrap"))` | `r range.fn(difference.fn("Gentoo"))` |
+| **Penguins** | `r n.fn("Adelie")` | `r n.fn("Chinstrap")` | `r n.fn("Gentoo")` |
+
+## Adjusted for species, males are heavier by `r num.fn(model$male$estimate)` g
+
+Linear model of body mass on species and sex; `r model$n` penguins;
+R² `r sprintf("%.2f", model$r_squared)`. Chinstrap and Adelie penguins of
+the same sex do not clearly differ. The model assumes one difference for
+all species, while within species it ranges from `r spread`.
+
+| Comparison | Difference (g) | `r ci_pct`% CI (g) |
+|---|---|---|
+| Males vs females | `r num.fn(model$male$estimate)` | `r range.fn(model$male)` |
+| Chinstrap vs Adelie | `r num.fn(model$chinstrap$estimate)` | `r range.fn(model$chinstrap)` |
+| Gentoo vs Adelie | `r num.fn(model$gentoo$estimate)` | `r range.fn(model$gentoo)` |
