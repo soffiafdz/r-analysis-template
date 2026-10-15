@@ -1,8 +1,9 @@
 # R analysis conventions: full guide
 
 Reference for setting up and running R analysis projects, with the reasoning
-behind each choice. Projects carry the short version, `docs/CONVENTIONS.md`;
-this file stays in the template.
+behind each choice. Every project created from the template
+(`soffiafdz/r-analysis-template` on GitHub) carries this guide in `docs/`,
+with the short version, `CONVENTIONS.md`, and the style guide, `STYLE.md`.
 
 The goal is that anyone who clones a repository can rebuild the exact software
 environment, run the pipeline from raw data to manuscript, and trace every
@@ -151,7 +152,7 @@ project/
 ├── reports-src/              # .qmd sources, _quarto.yml, references.bib, CSL;
 │                             # .Rprofile points Quarto's R at renv; slide
 │                             # theme and PowerPoint template (section 8)
-├── docs/                     # this file, audits and their check scripts
+├── docs/                     # GUIDE, CONVENTIONS, STYLE; audits and checks
 ├── data/                     # gitignored
 │   ├── archive/              # compressed copy of each original release
 │   ├── raw/                  # original data as received; read-only
@@ -679,31 +680,35 @@ pandoc's default (Python with python-pptx, outside renv). Re-run it from
 
 ---
 
+
 ## 13. Starting a new project
 
-Repositories grow with the work. The template is a parts bin, not a skeleton
-to copy whole: a file or folder enters a repository the first time code needs
-it. A first commit with empty folders, unused helpers and placeholder text
-looks generated, and is harder to review.
+The template is a GitHub template repository. A new project is created from
+it with all of its files in a single first commit. After that the two
+repositories are not linked: later changes to the template do not reach
+existing projects.
 
-Copied files belong to the project and may diverge from the template. To
-take up a later change to the template, compare the two copies
-(`diff -u <template_dir>/<file> <file>`) and apply what fits the project.
-
-1. Create the project with the core files only:
+1. Create the repository from the template on GitHub: "Use this template",
+   then "Create a new repository", with "Include all branches" left off.
+   Then clone it:
 
    ```sh
-   T=<template_dir>; P=<project_dir>
-   mkdir -p $P/docs && cd $P
-   cp $T/.gitignore $T/.lintr $T/.here $T/.Rprofile $T/environment.yml \
-      $T/DESCRIPTION .
-   cp $T/README.project.md README.md
-   cp $T/docs/CONVENTIONS.md docs/
-   sed -i '' -e 's/ENV_NAME/<env-name>/' environment.yml   # GNU sed: -i
-   sed -i '' -e 's/PROJECT_NAME/<name>/' DESCRIPTION          # letters, digits, dots
+   git clone git@github.com:soffiafdz/<name>.git
    ```
 
-2. Create the environment and initialise renv:
+   Only the default branch is copied. The worked example, on the `example`
+   branch, stays in the template. With the GitHub CLI installed,
+   `gh repo create <name> --private --template soffiafdz/r-analysis-template --clone`
+   does both steps.
+
+2. Fill in the names:
+
+   ```sh
+   sed -i '' -e 's/ENV_NAME/<env-name>/' environment.yml README.md   # GNU sed: -i
+   sed -i '' -e 's/PROJECT_NAME/<name>/' DESCRIPTION                 # letters, digits, dots
+   ```
+
+3. Create the environment and initialise renv:
 
    ```sh
    micromamba create -f environment.yml
@@ -718,29 +723,61 @@ take up a later change to the template, compare the two copies
    R packages can lag behind new R releases, and installing one can silently
    downgrade R.
 
-3. Write the README for real: overview, data access, setup. Replace every
+4. Write the README for real: overview, data access, setup. Replace every
    placeholder or delete the section; nothing in angle brackets gets
-   committed. `git init`; first commit.
+   committed.
 
-4. As the work needs them:
-   - First script: `R/scripts/01_...R` from the template in section 7, plus
-     `R/utils/logging.R`, `config.R`, `data_io.R` (and `validation.R` when
-     inputs are checked). Copy `config/pipeline_config.yaml` and fill only
-     the sections in use.
-   - First table or figure: `R/utils/tables.R` or `plotting.R`.
-   - First report: `reports-src/_quarto.yml`, `reports-src/.Rprofile`,
-     `reports-src/.gitignore`, the journal's CSL file and `references.bib`.
-   - First slides: `reports-src/slides.scss`, `reports-src/logos/` and
-     `screenshot_slides.sh`; for a PowerPoint copy also
-     `slides-reference.pptx` and `build_slides_reference.py` (section 8).
-   - `docs/STYLE.md` with `CONVENTIONS.md` once there is anything to look
-     at.
-   - Folders under `data/`, `models/`, `outputs/` and `logs/` are created by
-     the helpers on first write; they need no `.gitkeep`.
-   - Packages arrive with the code that calls them (implicit snapshot).
-     `DESCRIPTION` only lists packages no code calls, such as `lintr`.
+5. Delete what the project will not use (section 14), and keep, replace or
+   delete `LICENSE` and `LICENSE-docs` as the project's licence requires.
+   A deleted part can be taken from the template again later. Commit.
 
-5. Optionally add `.envrc` (2.4) and run `direnv allow`.
+6. Optionally add `.envrc` (2.4) and run `direnv allow`.
+
+Folders under `data/`, `models/`, `outputs/` and `logs/` are created by the
+helpers on first write; they need no `.gitkeep`. Packages arrive with the
+code that calls them (implicit snapshot); `DESCRIPTION` only lists packages
+no code calls, such as `lintr`. In `config/pipeline_config.yaml`, fill only
+the sections in use.
 
 Anything the project does differently from this guide goes in the README
 under "Project notes", with the reason.
+
+---
+
+## 14. What the template holds
+
+| Part | Files | Sections |
+|---|---|---|
+| Every project | `.gitignore`, `.lintr`, `.here`, `.Rprofile`, `environment.yml`, `DESCRIPTION`, `README.md`, `docs/` | 2, 3, 6 |
+| Pipeline | `config/pipeline_config.yaml`; `R/utils/logging.R`, `config.R`, `data_io.R`, `validation.R` | 4, 5, 7 |
+| Tables and figures | `R/utils/tables.R` (gt), `R/utils/plotting.R` (ggplot2) | 5 |
+| Reports | `reports-src/_quarto.yml`, `reports-src/.Rprofile`, `reports-src/.gitignore` | 8 |
+| Slides | `reports-src/slides.scss`, `reports-src/logos/`, `reports-src/screenshot_slides.sh`; for PowerPoint, `reports-src/slides-reference.pptx` and `reports-src/build_slides_reference.py` | 8 |
+
+The `example` branch adds `example/`, a small project built this way on the
+public penguin data that ship with R: three scripts, a PDF report and two
+slide decks, with the rendered documents in `example/outputs/reports/`.
+GitHub shows the HTML slides as source, so download `slides.html` to view
+them.
+
+### Requirements
+
+- micromamba, mamba or conda, to create the environment in
+  `environment.yml` (R 4.6, Quarto 1.9, compilers and system libraries).
+  R packages are installed with renv.
+- TeX Live with xelatex for PDF reports; the Libertinus fonts ship with it.
+  A minimal install such as TinyTeX needs `tlmgr install libertinus-fonts`.
+- Firefox, to screenshot slides for checking.
+- Python with python-pptx, only to rebuild the PowerPoint template.
+- PowerPoint, to check the PowerPoint slides; LibreOffice may lay them out
+  differently.
+
+The commands in this guide were written on macOS; `sed -i ''` is BSD sed,
+and GNU sed takes `-i` alone.
+
+### Licences
+
+In the template, this guide is licensed under [CC BY 4.0](../LICENSE-docs)
+and everything else under the [MIT licence](../LICENSE), except the logos in
+`reports-src/logos/`, which are trademarks of their institutions
+(`reports-src/logos/SOURCES.md`).
